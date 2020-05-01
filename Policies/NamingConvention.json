@@ -1,0 +1,40 @@
+{
+  "properties": {
+    "parameters": {
+      "resourceType": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Resource Type",
+          "description": "Resource type to enforce naming pattern.",
+          "strongType": "resourceTypes"
+        }
+      },
+      "nameParam": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Name Pattern",
+          "description": "Name pattern to enforce. The pattern is enfored using `like` so only one wildcard character (`*`) can be used."
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "[parameters('resourceType')]"
+          },
+          {
+            "not": {
+              "field": "name",
+              "like": "[parameters('nameParam')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "audit"
+      }
+    }
+  }
+}
